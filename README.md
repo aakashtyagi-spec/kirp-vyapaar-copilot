@@ -1,10 +1,12 @@
-# Vyapaar Copilot
+# VyapaarMitra
+
+**Inventory intelligence for every Indian retailer**
 
 AI-powered inventory management system for small-format retail stores in India.
 
 ## Overview
 
-Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding with deterministic algorithms for reliable inventory management across kirana shops, mini-marts, and small supermarkets.
+VyapaarMitra is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding with deterministic algorithms for reliable inventory management across kirana shops, mini-marts, and small supermarkets.
 
 ## Key Features
 
@@ -34,7 +36,7 @@ vyapaar-copilot/
 
 ## Market Context
 
-India has approximately 12 million grocery outlets and ~13 million kirana stores (source: Nielsen, IBEF reports). This project addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
+India has approximately 12 million grocery retail outlets and ~13 million kirana stores (source: McKinsey, Business Standard reports). This project addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
 
 ## Documentation
 

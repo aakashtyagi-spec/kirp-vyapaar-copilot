@@ -1,10 +1,10 @@
-# Requirements Document: Vyapaar Copilot
+# Requirements Document: VyapaarMitra
 
 ## Executive Summary
 
 **Problem**: India has approximately 12 million grocery retail outlets [CITE: McKinsey 2022 grocery retail India] and many business reports cite ~13 million kirana stores [CITE: Business Standard/Hindustan Times 2024 kirana store count]. Small-format retail stores—kirana shops, mini-marts, and small supermarkets—face inventory management challenges due to stockouts and dead stock. Traditional inventory management software assumes POS systems and digital infrastructure that most small-format retailers don't have.
 
-**Solution**: Vyapaar Copilot is an AI-powered decision support system that works even without POS/receipts through progressive data capture modes. It uses Amazon Bedrock to extract structured data from unstructured inputs (WhatsApp messages, voice notes, images) and provides daily reorder recommendations with explainable, multilingual chat support.
+**Solution**: VyapaarMitra is an AI-powered decision support system that works even without POS/receipts through progressive data capture modes. It uses Amazon Bedrock to extract structured data from unstructured inputs (WhatsApp messages, voice notes, images) and provides daily reorder recommendations with explainable, multilingual chat support.
 
 **Innovation**: 
 - Progressive capture (Pulse/WhatsApp/POS modes) meets stores where they are
@@ -45,7 +45,7 @@ This is an illustrative scenario with explicit assumptions. Actual impact will v
 
 ## Introduction
 
-Vyapaar Copilot is an AI-powered decision support system designed for small-format retail stores—including kirana shops, mini-marts/convenience stores, and small supermarkets (1–3 outlets)—to help with inventory reordering and stockout prevention. The system addresses the unique challenge that many small-format retailers lack formal POS systems, receipts, or invoices, making traditional inventory management solutions impractical.
+VyapaarMitra is an AI-powered decision support system designed for small-format retail stores—including kirana shops, mini-marts/convenience stores, and small supermarkets (1–3 outlets)—to help with inventory reordering and stockout prevention. The system addresses the unique challenge that many small-format retailers lack formal POS systems, receipts, or invoices, making traditional inventory management solutions impractical.
 
 The solution leverages Amazon Bedrock for AI-powered extraction and natural language interactions while maintaining accuracy through deterministic algorithms for critical business calculations. It supports three progressive modes of data capture, from simple daily stock checks to WhatsApp message parsing to optional CSV ingestion.
 
@@ -64,7 +64,7 @@ Traditional inventory management software assumes digital infrastructure (POS sy
 
 ## Solution Overview
 
-Vyapaar Copilot is an AI-powered solution that enhances decision-making, efficiency, and user experience across retail ecosystems by:
+VyapaarMitra is an AI-powered solution that enhances decision-making, efficiency, and user experience across retail ecosystems by:
 
 1. **Zero-Setup Inventory Intelligence**: Works even without POS/receipts through progressive data capture modes
 2. **AI-Powered Data Extraction**: Converts unstructured inputs (WhatsApp messages, voice notes, images) into structured inventory events
@@ -76,10 +76,10 @@ The solution directly aligns with the "AI for Retail, Commerce & Market Intellig
 
 ## Innovation & Uniqueness
 
-Vyapaar Copilot introduces several novel approaches that differentiate it from existing inventory management solutions:
+VyapaarMitra introduces several novel approaches that differentiate it from existing inventory management solutions:
 
 ### 1. Progressive Data Capture (Zero-Setup Innovation)
-Unlike traditional systems that require POS infrastructure, Vyapaar Copilot works with whatever data the store has:
+Unlike traditional systems that require POS infrastructure, VyapaarMitra works with whatever data the store has:
 - **Mode 0 (Pulse)**: Quantity buckets (0/1/2/3/4+) for stores with zero digital infrastructure
 - **Mode 1 (WhatsApp)**: AI extraction from existing supplier communication channels
 - **Mode 2 (POS)**: CSV ingestion for stores with basic billing systems
@@ -87,7 +87,7 @@ Unlike traditional systems that require POS infrastructure, Vyapaar Copilot work
 **Novelty**: This progressive approach meets stores where they are, creating a zero-barrier entry point while allowing graduation to higher accuracy modes as stores digitize.
 
 ### 2. Hybrid AI-Deterministic Architecture (Responsible AI)
-Most AI solutions are either pure-AI (prone to hallucination) or pure-rules (inflexible). Vyapaar Copilot combines both:
+Most AI solutions are either pure-AI (prone to hallucination) or pure-rules (inflexible). VyapaarMitra combines both:
 - **AI handles**: Unstructured data extraction, product normalization, multilingual chat
 - **Deterministic code handles**: All business-critical calculations (reorder quantities, stockout risks)
 - **Guardrails ensure**: No hallucinated numbers, all responses cite data sources
@@ -95,7 +95,7 @@ Most AI solutions are either pure-AI (prone to hallucination) or pure-rules (inf
 **Novelty**: This architecture delivers AI's flexibility for messy inputs while maintaining mathematical rigor for business decisions—critical for financial trust.
 
 ### 3. Multimodal WhatsApp Intelligence
-Existing inventory tools require manual data entry. Vyapaar Copilot extracts from real-world supplier communication:
+Existing inventory tools require manual data entry. VyapaarMitra extracts from real-world supplier communication:
 - **Text extraction**: Free-form Hindi/English messages with mixed formats
 - **Image extraction**: Screenshots of handwritten orders, delivery receipts
 - **Voice extraction**: Hindi/English voice notes with colloquial language
@@ -111,7 +111,7 @@ One-size-fits-all solutions fail because kirana shops, mini-marts, and small sup
 **Novelty**: Configurable parameters adapt recommendations to store type while maintaining consistent core logic—maximizes relevance across diverse retail formats.
 
 ### 5. Bharat-First Multilingual Design
-Most enterprise software is English-first with poor Hindi support. Vyapaar Copilot is designed for Bharat:
+Most enterprise software is English-first with poor Hindi support. VyapaarMitra is designed for Bharat:
 - **Language detection**: Automatic Hindi/English detection with Hinglish support
 - **Contextual responses**: Not just translation—culturally appropriate explanations
 - **WhatsApp integration**: Generates supplier messages in user's preferred language
@@ -164,7 +164,7 @@ Small-format retail owners are more comfortable in regional languages and need e
 
 ### 4. Grounded Reasoning with Guardrails (Hybrid AI-Deterministic)
 
-Unlike generic AI chatbots that hallucinate numbers, Vyapaar Copilot uses a hybrid approach:
+Unlike generic AI chatbots that hallucinate numbers, VyapaarMitra uses a hybrid approach:
 
 **The Problem with Pure AI**: LLMs can generate plausible-sounding but incorrect numbers:
 - "You should order 47 packets of salt" (made up)
@@ -183,7 +183,7 @@ This responsible AI approach ensures store owners can trust the system for criti
 
 ## Store Type Configuration
 
-Vyapaar Copilot adapts to different small-format retail contexts through store type configuration:
+VyapaarMitra adapts to different small-format retail contexts through store type configuration:
 
 ### Store Types
 
@@ -215,7 +215,7 @@ During initial setup, users select their store type, which configures default pa
 - **Kirana_Shop**: A small neighborhood retail shop in India, typically family-owned, selling groceries and daily essentials
 - **Mini_Mart**: A convenience store format, 500-1500 sq ft, may have basic billing systems
 - **Small_Supermarket**: A small supermarket with 1-3 outlets, typically 1500-3000 sq ft, usually has POS systems
-- **Vyapaar_Copilot**: The AI-powered inventory decision support system
+- **VyapaarMitra**: The AI-powered inventory decision support system
 - **Pulse_Mode**: Mode 0 - Daily stock level capture using quantity buckets (0/1/2/3/4+)
 - **WhatsApp_Mode**: Mode 1 - Extraction of purchase events from WhatsApp order messages
 - **POS_Mode**: Mode 2 - CSV data ingestion for stores with basic point-of-sale systems
@@ -236,11 +236,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. WHEN a user selects Pulse Mode, THE Vyapaar_Copilot SHALL display a list of tracked products with quantity bucket options (0, 1, 2, 3, 4+)
-2. WHEN a user selects a quantity bucket for a product, THE Vyapaar_Copilot SHALL record the stock level with a timestamp
-3. WHEN a user submits daily stock levels, THE Vyapaar_Copilot SHALL persist the data to the database immediately
-4. WHEN a user views their stock history, THE Vyapaar_Copilot SHALL display historical quantity bucket selections organized by date
-5. THE Vyapaar_Copilot SHALL support recording stock levels for at least 200 products in a single session (configurable based on store_type)
+1. WHEN a user selects Pulse Mode, THE VyapaarMitra SHALL display a list of tracked products with quantity bucket options (0, 1, 2, 3, 4+)
+2. WHEN a user selects a quantity bucket for a product, THE VyapaarMitra SHALL record the stock level with a timestamp
+3. WHEN a user submits daily stock levels, THE VyapaarMitra SHALL persist the data to the database immediately
+4. WHEN a user views their stock history, THE VyapaarMitra SHALL display historical quantity bucket selections organized by date
+5. THE VyapaarMitra SHALL support recording stock levels for at least 200 products in a single session (configurable based on store_type)
 
 ### Requirement 2: WhatsApp Message Parsing
 
@@ -248,12 +248,12 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. WHEN a user uploads a WhatsApp text message containing order information, THE Vyapaar_Copilot SHALL extract product names, quantities, and prices into structured JSON
-2. WHEN a user uploads a WhatsApp screenshot image, THE Vyapaar_Copilot SHALL use Amazon Textract for OCR preprocessing, then Bedrock to structure the extracted text into order details
-3. WHEN a user uploads a WhatsApp voice note, THE Vyapaar_Copilot SHALL use Amazon Transcribe for speech-to-text preprocessing, then Bedrock to extract purchase information from the transcribed text
-4. WHEN extraction is complete, THE Vyapaar_Copilot SHALL display extracted purchase events with confidence scores for user verification
-5. WHEN a user confirms extracted data, THE Vyapaar_Copilot SHALL record the purchase events in the database
-6. IF extraction confidence is below 0.7 for any field, THEN THE Vyapaar_Copilot SHALL flag the field for manual review
+1. WHEN a user uploads a WhatsApp text message containing order information, THE VyapaarMitra SHALL extract product names, quantities, and prices into structured JSON
+2. WHEN a user uploads a WhatsApp screenshot image, THE VyapaarMitra SHALL use Amazon Textract for OCR preprocessing, then Bedrock to structure the extracted text into order details
+3. WHEN a user uploads a WhatsApp voice note, THE VyapaarMitra SHALL use Amazon Transcribe for speech-to-text preprocessing, then Bedrock to extract purchase information from the transcribed text
+4. WHEN extraction is complete, THE VyapaarMitra SHALL display extracted purchase events with confidence scores for user verification
+5. WHEN a user confirms extracted data, THE VyapaarMitra SHALL record the purchase events in the database
+6. IF extraction confidence is below 0.7 for any field, THEN THE VyapaarMitra SHALL flag the field for manual review
 
 ### Requirement 3: POS Data Ingestion
 
@@ -261,11 +261,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. WHEN a user uploads a CSV file in POS Mode, THE Vyapaar_Copilot SHALL validate the file format and required columns
-2. WHEN a valid CSV file is uploaded, THE Vyapaar_Copilot SHALL parse and import purchase events into the database
-3. IF a CSV file has missing required columns, THEN THE Vyapaar_Copilot SHALL return a descriptive error message listing the missing columns
-4. WHEN CSV import is complete, THE Vyapaar_Copilot SHALL display a summary showing the number of records imported and any errors encountered
-5. THE Vyapaar_Copilot SHALL support CSV files with at least 1000 rows
+1. WHEN a user uploads a CSV file in POS Mode, THE VyapaarMitra SHALL validate the file format and required columns
+2. WHEN a valid CSV file is uploaded, THE VyapaarMitra SHALL parse and import purchase events into the database
+3. IF a CSV file has missing required columns, THEN THE VyapaarMitra SHALL return a descriptive error message listing the missing columns
+4. WHEN CSV import is complete, THE VyapaarMitra SHALL display a summary showing the number of records imported and any errors encountered
+5. THE VyapaarMitra SHALL support CSV files with at least 1000 rows
 
 ### Requirement 4: Product Name Normalization
 
@@ -273,11 +273,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. WHEN a product name is extracted from any input source, THE Vyapaar_Copilot SHALL use Bedrock to normalize it to a canonical product identifier
-2. WHEN multiple variant names map to the same product, THE Vyapaar_Copilot SHALL consolidate their stock levels and purchase history
-3. WHEN a new product name variant is encountered, THE Vyapaar_Copilot SHALL either map it to an existing product or create a new product entry
-4. THE Vyapaar_Copilot SHALL maintain a mapping table of product name variants to canonical identifiers
-5. WHEN displaying products to users, THE Vyapaar_Copilot SHALL show the canonical product name with variant names as metadata
+1. WHEN a product name is extracted from any input source, THE VyapaarMitra SHALL use Bedrock to normalize it to a canonical product identifier
+2. WHEN multiple variant names map to the same product, THE VyapaarMitra SHALL consolidate their stock levels and purchase history
+3. WHEN a new product name variant is encountered, THE VyapaarMitra SHALL either map it to an existing product or create a new product entry
+4. THE VyapaarMitra SHALL maintain a mapping table of product name variants to canonical identifiers
+5. WHEN displaying products to users, THE VyapaarMitra SHALL show the canonical product name with variant names as metadata
 
 ### Requirement 5: Reorder Quantity Calculation
 
@@ -285,11 +285,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL compute reorder quantities using deterministic algorithms based on historical consumption rates
-2. WHEN calculating reorder quantities, THE Vyapaar_Copilot SHALL consider current stock level, average daily consumption, and lead time
-3. WHEN generating a reorder recommendation, THE Vyapaar_Copilot SHALL include the calculated quantity, urgency level (low/medium/high), and confidence score
-4. THE Vyapaar_Copilot SHALL NOT use LLM-generated numbers for reorder quantities
-5. WHEN historical data is insufficient, THE Vyapaar_Copilot SHALL use conservative default values and mark the confidence score as low
+1. THE VyapaarMitra SHALL compute reorder quantities using deterministic algorithms based on historical consumption rates
+2. WHEN calculating reorder quantities, THE VyapaarMitra SHALL consider current stock level, average daily consumption, and lead time
+3. WHEN generating a reorder recommendation, THE VyapaarMitra SHALL include the calculated quantity, urgency level (low/medium/high), and confidence score
+4. THE VyapaarMitra SHALL NOT use LLM-generated numbers for reorder quantities
+5. WHEN historical data is insufficient, THE VyapaarMitra SHALL use conservative default values and mark the confidence score as low
 
 ### Requirement 6: Stockout Risk Prediction
 
@@ -297,11 +297,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL calculate stockout risk for each product based on current stock and consumption velocity
-2. WHEN a product's stockout risk exceeds 0.7, THE Vyapaar_Copilot SHALL flag it as high urgency in the reorder cart
-3. WHEN a product's stockout risk is between 0.4 and 0.7, THE Vyapaar_Copilot SHALL flag it as medium urgency
-4. WHEN a product's stockout risk is below 0.4, THE Vyapaar_Copilot SHALL flag it as low urgency
-5. THE Vyapaar_Copilot SHALL update stockout risk calculations daily based on the latest stock levels
+1. THE VyapaarMitra SHALL calculate stockout risk for each product based on current stock and consumption velocity
+2. WHEN a product's stockout risk exceeds 0.7, THE VyapaarMitra SHALL flag it as high urgency in the reorder cart
+3. WHEN a product's stockout risk is between 0.4 and 0.7, THE VyapaarMitra SHALL flag it as medium urgency
+4. WHEN a product's stockout risk is below 0.4, THE VyapaarMitra SHALL flag it as low urgency
+5. THE VyapaarMitra SHALL update stockout risk calculations daily based on the latest stock levels
 
 ### Requirement 7: Daily Reorder Cart Generation
 
@@ -309,11 +309,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL generate a daily reorder cart containing all products that need reordering
-2. WHEN displaying the reorder cart, THE Vyapaar_Copilot SHALL show product name, recommended quantity, urgency level, confidence score, and current stock level
-3. WHEN a user views the reorder cart, THE Vyapaar_Copilot SHALL sort products by urgency level (high to low)
-4. WHEN a user modifies a recommended quantity, THE Vyapaar_Copilot SHALL preserve the user's adjustment for that order
-5. THE Vyapaar_Copilot SHALL allow users to remove products from the reorder cart before finalizing
+1. THE VyapaarMitra SHALL generate a daily reorder cart containing all products that need reordering
+2. WHEN displaying the reorder cart, THE VyapaarMitra SHALL show product name, recommended quantity, urgency level, confidence score, and current stock level
+3. WHEN a user views the reorder cart, THE VyapaarMitra SHALL sort products by urgency level (high to low)
+4. WHEN a user modifies a recommended quantity, THE VyapaarMitra SHALL preserve the user's adjustment for that order
+5. THE VyapaarMitra SHALL allow users to remove products from the reorder cart before finalizing
 
 ### Requirement 8: Supplier Order Message Generation
 
@@ -321,11 +321,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. WHEN a user finalizes a reorder cart, THE Vyapaar_Copilot SHALL generate a formatted WhatsApp message containing the order details
-2. WHEN generating supplier messages, THE Vyapaar_Copilot SHALL group products by supplier if supplier information is available
-3. WHEN displaying the generated message, THE Vyapaar_Copilot SHALL provide a copy-to-clipboard button for easy sharing
-4. THE Vyapaar_Copilot SHALL format the message in a clear, readable format with product names and quantities
-5. WHERE the user has specified a preferred language, THE Vyapaar_Copilot SHALL generate the message in that language (Hindi or English)
+1. WHEN a user finalizes a reorder cart, THE VyapaarMitra SHALL generate a formatted WhatsApp message containing the order details
+2. WHEN generating supplier messages, THE VyapaarMitra SHALL group products by supplier if supplier information is available
+3. WHEN displaying the generated message, THE VyapaarMitra SHALL provide a copy-to-clipboard button for easy sharing
+4. THE VyapaarMitra SHALL format the message in a clear, readable format with product names and quantities
+5. WHERE the user has specified a preferred language, THE VyapaarMitra SHALL generate the message in that language (Hindi or English)
 
 ### Requirement 9: Multilingual Chat Interface
 
@@ -333,11 +333,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL provide a chat interface that accepts queries in both Hindi and English
-2. WHEN a user asks a question, THE Vyapaar_Copilot SHALL use Bedrock to generate a response grounded in the user's actual inventory data
-3. WHEN generating responses, THE Vyapaar_Copilot SHALL cite specific data sources (e.g., "Based on your stock levels from January 15...")
-4. WHEN a query cannot be answered from available data, THE Vyapaar_Copilot SHALL explicitly state the limitation rather than hallucinating information
-5. THE Vyapaar_Copilot SHALL detect the language of the user's query and respond in the same language
+1. THE VyapaarMitra SHALL provide a chat interface that accepts queries in both Hindi and English
+2. WHEN a user asks a question, THE VyapaarMitra SHALL use Bedrock to generate a response grounded in the user's actual inventory data
+3. WHEN generating responses, THE VyapaarMitra SHALL cite specific data sources (e.g., "Based on your stock levels from January 15...")
+4. WHEN a query cannot be answered from available data, THE VyapaarMitra SHALL explicitly state the limitation rather than hallucinating information
+5. THE VyapaarMitra SHALL detect the language of the user's query and respond in the same language
 
 ### Requirement 10: Responsible AI Guardrails
 
@@ -345,11 +345,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL use Bedrock guardrails to prevent hallucinated numerical values in chat responses
-2. WHEN generating any numerical recommendation, THE Vyapaar_Copilot SHALL compute it using deterministic code rather than LLM generation
-3. WHEN displaying AI-extracted data, THE Vyapaar_Copilot SHALL always show confidence scores to indicate reliability
-4. THE Vyapaar_Copilot SHALL log all AI interactions for audit and debugging purposes
-5. WHEN confidence scores are below acceptable thresholds, THE Vyapaar_Copilot SHALL require human verification before persisting data
+1. THE VyapaarMitra SHALL use Bedrock guardrails to prevent hallucinated numerical values in chat responses
+2. WHEN generating any numerical recommendation, THE VyapaarMitra SHALL compute it using deterministic code rather than LLM generation
+3. WHEN displaying AI-extracted data, THE VyapaarMitra SHALL always show confidence scores to indicate reliability
+4. THE VyapaarMitra SHALL log all AI interactions for audit and debugging purposes
+5. WHEN confidence scores are below acceptable thresholds, THE VyapaarMitra SHALL require human verification before persisting data
 
 ### Requirement 11: Data Persistence and History
 
@@ -357,11 +357,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL persist all stock levels, purchase events, and reorder decisions to a SQLite database
-2. WHEN data is written to the database, THE Vyapaar_Copilot SHALL ensure transactional consistency
-3. THE Vyapaar_Copilot SHALL maintain at least 90 days of historical data for trend analysis
-4. WHEN a user requests historical data, THE Vyapaar_Copilot SHALL retrieve and display it within 2 seconds
-5. THE Vyapaar_Copilot SHALL provide database backup functionality for data recovery
+1. THE VyapaarMitra SHALL persist all stock levels, purchase events, and reorder decisions to a SQLite database
+2. WHEN data is written to the database, THE VyapaarMitra SHALL ensure transactional consistency
+3. THE VyapaarMitra SHALL maintain at least 90 days of historical data for trend analysis
+4. WHEN a user requests historical data, THE VyapaarMitra SHALL retrieve and display it within 2 seconds
+5. THE VyapaarMitra SHALL provide database backup functionality for data recovery
 
 ### Requirement 12: Web User Interface
 
@@ -369,11 +369,11 @@ During initial setup, users select their store type, which configures default pa
 
 #### Acceptance Criteria
 
-1. THE Vyapaar_Copilot SHALL provide a web-based user interface accessible via standard browsers
-2. WHEN a user accesses the interface, THE Vyapaar_Copilot SHALL display a dashboard with current stock status and reorder recommendations
-3. THE Vyapaar_Copilot SHALL provide navigation to access Pulse Mode, WhatsApp Mode, POS Mode, and the chat interface
-4. THE Vyapaar_Copilot SHALL render correctly on mobile devices with screen widths down to 360px
-5. WHEN a user performs an action, THE Vyapaar_Copilot SHALL provide immediate visual feedback (loading indicators, success messages)
+1. THE VyapaarMitra SHALL provide a web-based user interface accessible via standard browsers
+2. WHEN a user accesses the interface, THE VyapaarMitra SHALL display a dashboard with current stock status and reorder recommendations
+3. THE VyapaarMitra SHALL provide navigation to access Pulse Mode, WhatsApp Mode, POS Mode, and the chat interface
+4. THE VyapaarMitra SHALL render correctly on mobile devices with screen widths down to 360px
+5. WHEN a user performs an action, THE VyapaarMitra SHALL provide immediate visual feedback (loading indicators, success messages)
 
 ## Success Metrics & Impact
 
@@ -419,7 +419,7 @@ During initial setup, users select their store type, which configures default pa
 
 ## Demo Flow (2-3 Minutes)
 
-This demo showcases the same product (Tata Salt 1kg) across three different store types to demonstrate how Vyapaar Copilot adapts to varying data maturity levels.
+This demo showcases the same product (Tata Salt 1kg) across three different store types to demonstrate how VyapaarMitra adapts to varying data maturity levels.
 
 ### Demo Product: Tata Salt 1kg
 - Common across all store types
@@ -582,7 +582,7 @@ These are planning estimates. Actual CAC, LTV, and margins will depend on execut
 1. **POS/Billing Software Partners** (30% of customer acquisition)
    - Integrate with existing POS providers (Marg ERP, Vyapar, Tally, Zoho Books)
    - Offer as add-on module in their app stores
-   - Revenue share: 20% to partner, 80% to Vyapaar Copilot
+   - Revenue share: 20% to partner, 80% to VyapaarMitra
    - **Advantage**: Access to existing user base, trusted distribution channel
 
 2. **Distributor/Wholesaler Networks** (25% of customer acquisition)

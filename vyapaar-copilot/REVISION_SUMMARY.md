@@ -1,4 +1,4 @@
-# Vyapaar Copilot Spec Revision Summary
+# VyapaarMitra Spec Revision Summary
 
 ## Overview
 Revised requirements.md and design.md to remove unverifiable "pitch-deck" claims and replace with defensible, judge-safe content suitable for hackathon evaluation.

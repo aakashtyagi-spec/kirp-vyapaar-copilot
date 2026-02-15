@@ -1,8 +1,8 @@
-# Design Document: Vyapaar Copilot
+# Design Document: VyapaarMitra
 
 ## Executive Summary
 
-Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding with deterministic algorithms for reliable inventory management. The architecture ensures that while AI enhances user experience and data capture, all critical business decisions are based on verifiable, deterministic calculations.
+VyapaarMitra is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding with deterministic algorithms for reliable inventory management. The architecture ensures that while AI enhances user experience and data capture, all critical business decisions are based on verifiable, deterministic calculations.
 
 **Key Design Principles**:
 1. **Separation of Concerns**: AI handles unstructured inputs, deterministic code handles business logic
@@ -27,7 +27,7 @@ Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock
 
 ## Overview
 
-Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding capabilities with deterministic algorithms for reliable inventory management across small-format retail stores (kirana shops, mini-marts, and small supermarkets). The architecture follows a clear separation of concerns:
+VyapaarMitra is a hybrid AI-deterministic system that combines Amazon Bedrock's language understanding capabilities with deterministic algorithms for reliable inventory management across small-format retail stores (kirana shops, mini-marts, and small supermarkets). The architecture follows a clear separation of concerns:
 
 - **AI Layer (Bedrock)**: Handles unstructured data extraction (text, images, voice), product name normalization, and natural language interactions
 - **Deterministic Layer (Python)**: Computes all business-critical numbers (reorder quantities, stockout risks, confidence scores)
@@ -326,7 +326,7 @@ class BedrockChatService:
 
 **Chat Prompt Template**:
 ```
-You are Vyapaar Copilot, an inventory assistant for Kirana stores in India.
+You are VyapaarMitra, an inventory assistant for Kirana stores in India.
 
 User's inventory context:
 {inventory_summary_json}
@@ -1168,7 +1168,7 @@ SAMPLE_PRODUCTS = [
 
 ### Data Collection & Usage
 
-Vyapaar Copilot collects and processes the following types of data:
+VyapaarMitra collects and processes the following types of data:
 
 1. **Store Information**: Store name, type, location (optional), configuration preferences
 2. **Inventory Data**: Product names, stock levels, purchase history, supplier information
@@ -1248,7 +1248,7 @@ Vyapaar Copilot collects and processes the following types of data:
 **Daily Workflow (5 minutes)**:
 
 **Morning Routine (3 minutes)**:
-1. Open Vyapaar Copilot on phone
+1. Open VyapaarMitra on phone
 2. Navigate to Pulse Mode
 3. Quickly scan shelves and tap quantity buckets:
    - Tata Salt 1kg: Tap "1" (low stock)
@@ -1422,7 +1422,7 @@ Vyapaar Copilot collects and processes the following types of data:
 
 ### Dual Testing Approach
 
-Vyapaar Copilot uses both unit testing and property-based testing for comprehensive coverage:
+VyapaarMitra uses both unit testing and property-based testing for comprehensive coverage:
 
 **Unit Tests**: Verify specific examples, edge cases, and error conditions
 **Property Tests**: Verify universal properties across all inputs
