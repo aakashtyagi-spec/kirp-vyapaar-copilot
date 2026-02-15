@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-**Problem**: 12.5M small-format retail stores in India (kirana shops, mini-marts, small supermarkets) lose ₹15,000-60,000/month due to stockouts and dead stock. Traditional inventory management software assumes POS systems and digital infrastructure that most small retailers don't have.
+**Problem**: India has approximately 12 million grocery retail outlets according to industry research (Nielsen, IBEF reports cite ~13 million kirana stores). Small-format retail stores—kirana shops, mini-marts, and small supermarkets—face inventory management challenges due to stockouts and dead stock. Traditional inventory management software assumes POS systems and digital infrastructure that most small-format retailers don't have.
 
 **Solution**: Vyapaar Copilot is an AI-powered decision support system that works even without POS/receipts through progressive data capture modes. It uses Amazon Bedrock to extract structured data from unstructured inputs (WhatsApp messages, voice notes, images) and provides daily reorder recommendations with explainable, multilingual chat support.
 
@@ -13,18 +13,35 @@
 - Store type adaptation (kirana/mini-mart/supermarket)
 - Bharat-first multilingual design (Hindi/English)
 
-**Impact**: 
-- 30% stockout reduction → ₹15,000-60,000/month additional revenue per store
-- 25 minutes/day time savings → 12.5 hours/month freed for growth
-- 12.5M potential beneficiaries across India
-- ₹6,120 Cr TAM (~$750M USD)
+**Impact Hypothesis** (to be validated through pilot testing):
+- Target: 30% stockout reduction through systematic tracking
+- Time savings: Reduce daily inventory management from 30 min to <5 min
+- Addressable market: ~12 million small-format retail stores in India
+- Measurable metrics: stockout incidents, dead stock value, time saved/day, pulse completion rate
 
 **Feasibility**: 
 - Proven tech stack (FastAPI, SQLite, Bedrock, React)
 - Demo-ready in 2-3 minutes with live Bedrock calls
 - Clear GTM through POS partners, distributors, FMCG field sales
-- 50x ROI for customers (₹299/month → ₹15,000/month value)
-- 85-90% gross margins, 15:1 to 167:1 LTV:CAC ratios
+
+### Illustrative Impact Scenario
+
+**Assumptions** (to be validated with pilot data):
+- Typical kirana shop: ₹50,000 monthly sales
+- Estimated stockout loss: 10-15% of potential sales (industry estimates)
+- System reduces stockouts by: 30% (hypothesis)
+
+**Formula**: 
+```
+recovered_sales = monthly_sales × stockout_loss_% × reduction_%
+```
+
+**Example Calculation**:
+```
+recovered_sales = ₹50,000 × 12% × 30% = ₹1,800/month
+```
+
+This is an illustrative scenario with explicit assumptions. Actual impact will vary by store type, product mix, and baseline inventory practices. Pilot testing is required to validate these hypotheses.
 
 ## Introduction
 
@@ -367,28 +384,28 @@ During initial setup, users select their store type, which configures default pa
 4. **Multi-Store Type Validation**: System performs effectively across all three store types (kirana, mini-mart, small supermarket)
 5. **System Latency**: <2 seconds for reorder cart generation, <3 seconds for AI extraction
 
-### Business Impact Metrics
-1. **Stockout Prevention**: Reduce stockouts by 30% compared to manual inventory management
-   - **Impact**: For a typical kirana with ₹50,000 monthly revenue, 30% stockout reduction = ₹15,000 additional revenue/month
+### Business Impact Metrics (Hypotheses to Validate)
+1. **Stockout Prevention**: Target 30% reduction in stockouts compared to manual inventory management
+   - **Measurement**: Track stockout incidents before/after system adoption
 2. **Time Savings**: Reduce daily inventory management time from 30 minutes to <5 minutes
-   - **Impact**: 25 minutes/day × 30 days = 12.5 hours/month freed for customer service or business expansion
-3. **Working Capital Optimization**: Reduce dead stock by 20% through better reorder timing
-   - **Impact**: For a mini-mart with ₹2L inventory, 20% reduction = ₹40,000 freed capital
-4. **User Adoption**: 80% of test users continue using the system after initial trial period
-5. **Margin Improvement**: Increase net margins by 2-3 percentage points through reduced stockouts and dead stock
-   - **Impact**: For a small supermarket with ₹10L monthly revenue at 10% margin, 2% improvement = ₹20,000 additional profit/month
+   - **Measurement**: User-reported time tracking
+3. **Working Capital Optimization**: Target 20% reduction in dead stock through better reorder timing
+   - **Measurement**: Track dead stock value before/after
+4. **User Adoption**: Target 80% of test users continue using the system after initial trial period
+   - **Measurement**: 30-day retention rate
+5. **User Satisfaction**: Target NPS >50
+   - **Measurement**: Post-trial surveys
 
 ### Scale & Reach (Impact Scoring)
 1. **Addressable Market**: 
-   - 10M+ kirana shops in India
-   - 2M+ mini-marts and convenience stores
-   - 500K+ small supermarket chains (1-3 outlets)
-   - **Total**: 12.5M+ potential beneficiaries
+   - ~12 million small-format retail stores in India (industry research: Nielsen, IBEF)
+   - Includes kirana shops, mini-marts, and small supermarkets
 
-2. **Economic Impact per Store**:
-   - Kirana: ₹15,000/month additional revenue + 12.5 hours/month time savings
-   - Mini-Mart: ₹30,000/month additional revenue + ₹40,000 freed capital
-   - Small Supermarket: ₹60,000/month additional revenue + 15 hours/month time savings
+2. **Measurable Impact per Store** (to be validated):
+   - Stockout incident reduction (count)
+   - Time saved per day (minutes)
+   - Dead stock value reduction (₹)
+   - Pulse completion rate (%)
 
 3. **Ecosystem Benefits**:
    - **FMCG Brands**: Better shelf availability data, reduced stockouts at retail
@@ -495,19 +512,24 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
 
 ### Market Opportunity & Sizing
 
-**Total Addressable Market (TAM)**: 12.5M small-format retail stores in India
-- 10M kirana shops × ₹299/month = ₹3,000 Cr/year potential
-- 2M mini-marts × ₹799/month = ₹1,920 Cr/year potential  
-- 500K small supermarkets × ₹1,999/month = ₹1,200 Cr/year potential
-- **Total TAM**: ₹6,120 Cr/year (~$750M USD)
+**Addressable Market**: India has approximately 12 million grocery retail outlets (industry research from Nielsen, IBEF reports cite ~13 million kirana stores).
 
-**Serviceable Addressable Market (SAM)**: Stores with smartphone access and basic digital literacy
-- ~40% of TAM = ₹2,450 Cr/year (~$300M USD)
+**Market Segments**:
+- Kirana shops: Majority of small-format retail
+- Mini-marts/convenience stores: Growing urban segment
+- Small supermarkets (1-3 outlets): Premium segment
 
-**Serviceable Obtainable Market (SOM)**: 3-year target
-- Year 1: 10,000 stores (0.08% of TAM) = ₹6 Cr revenue
-- Year 2: 50,000 stores (0.4% of TAM) = ₹30 Cr revenue
-- Year 3: 200,000 stores (1.6% of TAM) = ₹120 Cr revenue
+**Illustrative ARR Formula** (for business planning):
+```
+ARR = adopting_stores × ARPU × 12
+```
+
+**Example Scenario** (assumptions to be validated):
+- Assume 10,000 stores adopt in Year 1
+- Average ARPU: ₹500/month (blended across tiers)
+- Illustrative ARR: 10,000 × ₹500 × 12 = ₹6 Cr
+
+This is a planning scenario with explicit assumptions. Actual adoption rates, pricing, and revenue will depend on market validation, competitive dynamics, and execution.
 
 ### Tiered Pricing Strategy
 
@@ -517,8 +539,7 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
    - Single user
    - Hindi + English support
    - Email support
-   - **Target**: 10M+ kirana shops in India
-   - **Value Prop**: ₹299/month investment → ₹15,000/month additional revenue (50x ROI)
+   - **Target**: Kirana shops across India
 
 2. **Mini-Mart Plan** (₹799/month or ₹7,999/year - 17% discount)
    - Up to 100 tracked SKUs
@@ -526,8 +547,7 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
    - Up to 3 users
    - Priority support
    - Basic analytics dashboard
-   - **Target**: 2M+ mini-marts and convenience stores
-   - **Value Prop**: ₹799/month investment → ₹30,000/month additional revenue + ₹40,000 freed capital
+   - **Target**: Mini-marts and convenience stores
 
 3. **Small Supermarket Plan** (₹1,999/month per outlet or ₹19,999/year - 17% discount)
    - Up to 500 tracked SKUs per outlet
@@ -536,27 +556,25 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
    - API access for integration
    - Advanced analytics and forecasting
    - Dedicated account manager
-   - **Target**: 500K+ small supermarket chains
-   - **Value Prop**: ₹1,999/month investment → ₹60,000/month additional revenue (30x ROI)
+   - **Target**: Small supermarket chains
 
 ### Revenue Model & Unit Economics
 
-**Customer Acquisition Cost (CAC)**:
+**Illustrative Unit Economics** (assumptions to be validated):
+
+**Customer Acquisition Cost (CAC)** (estimated):
 - Direct digital: ₹500-800 per customer (WhatsApp campaigns, content marketing)
 - Partner channel: ₹300-500 per customer (revenue share with POS/distributor partners)
 - Blended CAC target: ₹600
 
-**Lifetime Value (LTV)**:
+**Lifetime Value (LTV)** (estimated, assumes retention):
 - Kirana: ₹2,999/year × 3 years retention = ₹8,997
 - Mini-Mart: ₹7,999/year × 4 years retention = ₹31,996
 - Small Supermarket: ₹19,999/year × 5 years retention = ₹99,995
 
-**LTV:CAC Ratios**:
-- Kirana: 15:1
-- Mini-Mart: 53:1
-- Small Supermarket: 167:1
+**Gross Margins** (estimated): 85-90% (SaaS model, AWS infrastructure costs ~10-15%)
 
-**Gross Margins**: 85-90% (SaaS model, AWS infrastructure costs ~10-15%)
+These are planning estimates. Actual CAC, LTV, and margins will depend on execution, market conditions, and operational efficiency.
 
 ### Go-to-Market Channels
 
@@ -593,29 +611,29 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
 
 ### Sustainability & Growth Strategy
 
-**Year 1: Product-Market Fit** (10,000 stores)
+**Year 1: Product-Market Fit** (target: 10,000 stores)
 - Focus on kirana and mini-mart segments
 - Pilot partnerships with 2-3 POS providers
 - Refine AI models based on real-world usage
-- Achieve 80%+ retention rate
+- Target: 80%+ retention rate
 
-**Year 2: Channel Expansion** (50,000 stores)
+**Year 2: Channel Expansion** (target: 50,000 stores)
 - Scale POS partnerships to 10+ providers
 - Launch distributor partnership program
 - Add small supermarket features (multi-store, API)
 - Expand to 5 regional languages
 
-**Year 3: Market Leadership** (200,000 stores)
+**Year 3: Market Leadership** (target: 200,000 stores)
 - FMCG brand partnerships for data insights
 - Payment platform integrations
 - International expansion (Bangladesh, Sri Lanka, Indonesia)
 - Enterprise features for chains (10+ outlets)
 
-**Competitive Moats**:
-1. **Data Network Effects**: More stores → better product normalization → better recommendations
-2. **Integration Ecosystem**: Deep partnerships with POS, distributors, FMCG brands create switching costs
-3. **Multilingual AI Models**: Trained on Indian retail context, hard to replicate
-4. **Progressive Capture**: Only solution that works without POS—captures market others can't serve
+**Competitive Advantages**:
+1. **Progressive Capture**: Works without POS—captures market others can't serve
+2. **Integration Ecosystem**: Partnerships with POS, distributors, FMCG brands
+3. **Multilingual AI**: Trained on Indian retail context
+4. **Data Network Effects**: More stores → better product normalization → better recommendations
 
 ## Responsible AI Considerations
 
@@ -666,18 +684,19 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
 
 ### Impact (20%)
 **Beneficiaries**: 
-- 12.5M small-format retail stores in India
+- ~12 million small-format retail stores in India (industry research: Nielsen, IBEF)
 - FMCG brands, distributors, end customers (ecosystem benefits)
 
-**Measurable Improvement**: 
-- 30% stockout reduction → ₹15,000-60,000/month additional revenue
-- 25 minutes/day time savings → 12.5 hours/month freed
-- 20% dead stock reduction → ₹40,000 freed capital
-- 2-3% margin improvement → ₹20,000/month additional profit
+**Measurable Improvement** (hypotheses to validate): 
+- Target: 30% stockout reduction through systematic tracking
+- Target: 25 minutes/day time savings (30 min → 5 min)
+- Target: 20% dead stock reduction through better reorder timing
+- Measurable metrics: stockout incidents, dead stock value, time saved/day, pulse completion rate
 
 **Scale**: 
-- ₹6,120 Cr TAM (~$750M USD)
-- 3-year target: 200,000 stores, ₹120 Cr revenue
+- Addressable market: ~12 million stores
+- Illustrative ARR formula: adopting_stores × ARPU × 12
+- Example: 10,000 stores × ₹500/month × 12 = ₹6 Cr ARR (Year 1 scenario)
 
 ### Business Feasibility (20%)
 **GTM Strategy**: 
@@ -686,11 +705,10 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
 
 **Pricing**: 
 - Tiered: ₹299/₹799/₹1,999 per month
-- 50x ROI for customers (₹299 → ₹15,000 value)
 - 17% discount for annual plans
+- Value proposition: Systematic tracking reduces stockouts and saves time
 
 **Sustainability**: 
-- 85-90% gross margins (SaaS model)
-- 15:1 to 167:1 LTV:CAC ratios
-- Data network effects create moat
-- Clear 3-year growth path: 10K → 50K → 200K stores
+- Estimated 85-90% gross margins (SaaS model)
+- Clear 3-year growth path: 10K → 50K → 200K stores (targets)
+- Data network effects create competitive advantage

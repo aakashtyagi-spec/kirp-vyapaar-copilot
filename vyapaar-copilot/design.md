@@ -21,7 +21,7 @@ Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock
 - Frontend: React/HTML responsive web app
 - Deployment: AWS (EC2/ECS/Lambda)
 
-**Market Context**: India has approximately 12 million grocery outlets and ~13 million kirana stores (source: Nielsen, IBEF reports). This design addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
+**Market Context**: India has approximately 12 million grocery retail outlets according to industry research (Nielsen, IBEF reports cite ~13 million kirana stores). This design addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
 
 **Technical Feasibility**: All components use production-ready technologies available in AWS Mumbai region. MVP can be built in 4 weeks with 2 developers. Demo requires <30 minutes setup time.
 
@@ -178,6 +178,7 @@ class PurchaseEvent:
 ```python
 class ReorderRecommendation:
     id: str  # UUID
+    store_id: str  # Foreign key to Store (needed for validation)
     product_id: str  # Foreign key to Product
     recommended_quantity: float
     urgency: str  # "low", "medium", "high"
@@ -377,12 +378,15 @@ def calculate_reorder_quantity(
     6. Reorder quantity = (avg_daily_consumption * target_cover_days) + safety_stock - current_stock
     7. Compute confidence based on data availability and variance
     
-    IMPORTANT: Pulse Mode buckets are NOT units. They indicate stock levels (0/1/2/3/4+).
-    Consumption velocity is computed from actual purchase events (WhatsApp/POS), not from bucket changes.
-    Pulse data is used for:
-    - Current stock level assessment
-    - Risk scoring (how close to stockout)
-    - "Top-up to target bucket" logic when no purchase history exists
+    CRITICAL - Pulse Mode Limitations:
+    - Pulse buckets (0/1/2/3/4+) are NOT exact quantities
+    - They indicate stock levels: 0=out, 1=low, 2=medium, 3=good, 4+=high
+    - Consumption velocity REQUIRES actual purchase events (WhatsApp/POS data)
+    - In Pulse-only mode (no purchase history):
+      * System uses "top-up to target bucket" logic
+      * Recommendations are conservative with LOW confidence
+      * Output: "top-up to bucket 3+" OR quantity range with LOW confidence
+    - Exact reorder quantities ONLY possible when purchase events exist
     """
     
     # Step 1: Get store configuration
@@ -403,13 +407,15 @@ def calculate_reorder_quantity(
         confidence = 0.3
         
         # In "no receipts" mode, use Pulse bucket as proxy for current stock
-        # Recommend "top-up to target bucket" logic
+        # Recommend "top-up to target bucket" logic with LOW confidence
+        # NEVER claim exact per-SKU quantities from Pulse-only data
         if current_stock <= 1:  # Bucket 0 or 1
-            reorder_quantity = 10  # Top up to reasonable level
+            # Output: "Top-up to bucket 3+" OR "Order 8-12 units (LOW confidence)"
+            reorder_quantity = 10  # Conservative estimate for demo
             urgency = "high"
             stockout_risk = 0.9
         elif current_stock == 2:  # Bucket 2
-            reorder_quantity = 5
+            reorder_quantity = 5  # Conservative estimate
             urgency = "medium"
             stockout_risk = 0.6
         else:  # Bucket 3 or 4+
@@ -879,6 +885,7 @@ CREATE TABLE purchase_events (
 -- Reorder recommendations
 CREATE TABLE reorder_recommendations (
     id TEXT PRIMARY KEY,
+    store_id TEXT NOT NULL,
     product_id TEXT NOT NULL,
     recommended_quantity REAL NOT NULL,
     urgency TEXT NOT NULL,
@@ -889,6 +896,7 @@ CREATE TABLE reorder_recommendations (
     days_until_stockout REAL,
     generated_at TIMESTAMP NOT NULL,
     user_adjusted_quantity REAL,
+    FOREIGN KEY (store_id) REFERENCES stores(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
@@ -1194,7 +1202,8 @@ Vyapaar Copilot collects and processes the following types of data:
 ### Data Security
 
 1. **Encryption**:
-   - Data encrypted at rest in SQLite database
+   - Data encrypted at rest via managed storage/disk encryption in deployment environment
+   - SQLite used for demo/development; production deployments use managed database services with encryption
    - Data encrypted in transit (HTTPS/TLS)
    - AWS services use encryption by default
 
