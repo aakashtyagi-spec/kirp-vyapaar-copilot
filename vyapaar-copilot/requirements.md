@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-**Problem**: India has approximately 12 million grocery retail outlets according to industry research (Nielsen, IBEF reports cite ~13 million kirana stores). Small-format retail stores—kirana shops, mini-marts, and small supermarkets—face inventory management challenges due to stockouts and dead stock. Traditional inventory management software assumes POS systems and digital infrastructure that most small-format retailers don't have.
+**Problem**: India has approximately 12 million grocery retail outlets [CITE: McKinsey 2022 grocery retail India] and many business reports cite ~13 million kirana stores [CITE: Business Standard/Hindustan Times 2024 kirana store count]. Small-format retail stores—kirana shops, mini-marts, and small supermarkets—face inventory management challenges due to stockouts and dead stock. Traditional inventory management software assumes POS systems and digital infrastructure that most small-format retailers don't have.
 
 **Solution**: Vyapaar Copilot is an AI-powered decision support system that works even without POS/receipts through progressive data capture modes. It uses Amazon Bedrock to extract structured data from unstructured inputs (WhatsApp messages, voice notes, images) and provides daily reorder recommendations with explainable, multilingual chat support.
 
@@ -27,9 +27,9 @@
 ### Illustrative Impact Scenario
 
 **Assumptions** (to be validated with pilot data):
-- Typical kirana shop: ₹50,000 monthly sales
-- Estimated stockout loss: 10-15% of potential sales (industry estimates)
-- System reduces stockouts by: 30% (hypothesis)
+- Typical kirana shop: ₹50,000 monthly sales (assumption)
+- Estimated stockout loss: 10-15% of potential sales (hypothesis to validate)
+- System reduces stockouts by: 30% (hypothesis to validate)
 
 **Formula**: 
 ```
@@ -58,7 +58,7 @@ Small-format retail stores across India face critical inventory management chall
 3. **Manual Guesswork**: Reorder decisions are based on memory and intuition rather than data, leading to suboptimal inventory levels
 4. **Data Maturity Gap**: Kirana shops often have no POS or receipts; mini-marts may have basic billing; small supermarkets may have POS exports—but none have actionable insights
 5. **Time Burden**: Store owners spend 30+ minutes daily on inventory checks and supplier coordination
-6. **Margin Leakage**: Poor inventory decisions erode already thin margins (typically 8-15% in small retail)
+6. **Margin Leakage**: Poor inventory decisions erode already thin margins (category-dependent)
 
 Traditional inventory management software assumes digital infrastructure (POS systems, barcode scanners, trained staff) that most small-format retailers don't have. This creates a technology adoption gap that leaves millions of stores without decision support tools.
 
@@ -249,8 +249,8 @@ During initial setup, users select their store type, which configures default pa
 #### Acceptance Criteria
 
 1. WHEN a user uploads a WhatsApp text message containing order information, THE Vyapaar_Copilot SHALL extract product names, quantities, and prices into structured JSON
-2. WHEN a user uploads a WhatsApp screenshot image, THE Vyapaar_Copilot SHALL use Bedrock to extract order details from the image
-3. WHEN a user uploads a WhatsApp voice note, THE Vyapaar_Copilot SHALL transcribe and extract purchase information
+2. WHEN a user uploads a WhatsApp screenshot image, THE Vyapaar_Copilot SHALL use Amazon Textract for OCR preprocessing, then Bedrock to structure the extracted text into order details
+3. WHEN a user uploads a WhatsApp voice note, THE Vyapaar_Copilot SHALL use Amazon Transcribe for speech-to-text preprocessing, then Bedrock to extract purchase information from the transcribed text
 4. WHEN extraction is complete, THE Vyapaar_Copilot SHALL display extracted purchase events with confidence scores for user verification
 5. WHEN a user confirms extracted data, THE Vyapaar_Copilot SHALL record the purchase events in the database
 6. IF extraction confidence is below 0.7 for any field, THEN THE Vyapaar_Copilot SHALL flag the field for manual review
@@ -441,14 +441,15 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
    - Submit → Data saved
 
 3. **View Reorder Cart** (45 sec)
-   - System shows: "Tata Salt 1kg - Order 15 packets (HIGH urgency, 0.85 confidence)"
-   - Explanation: "Current stock: 1 packet. Avg consumption: 5 packets/day. Will run out in <1 day."
+   - System shows: "Tata Salt 1kg - Top-up to bucket 3+ (HIGH urgency, LOW confidence 0.3)"
+   - Explanation: "Current stock: bucket 1 (low). No purchase history available. Recommendation: top-up to maintain stock."
+   - Alternative display: "Order range: 10-20 packets (LOW confidence 0.3-0.4)"
    - Click "Generate Order Message"
-   - Copy WhatsApp message in Hindi: "नमस्ते, कृपया भेजें: टाटा नमक 1kg - 15 पैकेट"
+   - Copy WhatsApp message in Hindi: "नमस्ते, कृपया भेजें: टाटा नमक 1kg - 10-15 पैकेट"
 
 4. **Chat Query** (30 sec)
    - Ask in Hindi: "मेरे पास कौन से प्रोडक्ट कम हो रहे हैं?"
-   - Response: "आपके स्टॉक में 3 प्रोडक्ट कम हैं (15 फरवरी के डेटा के अनुसार): 1. टाटा नमक 1kg - केवल 1 पैकेट..."
+   - Response: "आपके स्टॉक में 3 प्रोडक्ट कम हैं (15 फरवरी के डेटा के अनुसार): 1. टाटा नमक 1kg - bucket 1 (low stock)..."
 
 ### Flow 2: Mini-Mart (WhatsApp Mode)
 **Persona**: Priya, runs a 800 sq ft mini-mart in Bangalore, uses WhatsApp for supplier orders
@@ -512,7 +513,7 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
 
 ### Market Opportunity & Sizing
 
-**Addressable Market**: India has approximately 12 million grocery retail outlets (industry research from Nielsen, IBEF reports cite ~13 million kirana stores).
+**Addressable Market**: India has approximately 12 million grocery retail outlets [CITE: McKinsey 2022 grocery retail India] and many business reports cite ~13 million kirana stores [CITE: Business Standard/Hindustan Times 2024 kirana store count].
 
 **Market Segments**:
 - Kirana shops: Majority of small-format retail
@@ -684,7 +685,7 @@ These are planning estimates. Actual CAC, LTV, and margins will depend on execut
 
 ### Impact (20%)
 **Beneficiaries**: 
-- ~12 million small-format retail stores in India (industry research: Nielsen, IBEF)
+- ~12 million small-format retail stores in India [CITE: McKinsey 2022 grocery retail India; Business Standard/Hindustan Times 2024 kirana store count]
 - FMCG brands, distributors, end customers (ecosystem benefits)
 
 **Measurable Improvement** (hypotheses to validate): 

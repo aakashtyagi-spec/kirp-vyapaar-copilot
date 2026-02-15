@@ -3,9 +3,71 @@
 ## Overview
 Revised requirements.md and design.md to remove unverifiable "pitch-deck" claims and replace with defensible, judge-safe content suitable for hackathon evaluation.
 
+**Latest Revision (Round 2)**: Further refinements to remove remaining unverifiable claims, fix Demo Flow Pulse Mode limitations, update citation placeholders, and align multimodal pipeline descriptions.
+
 ## Critical Changes Made
 
-### 1. Executive Summary (requirements.md)
+### Round 2 Refinements (Latest)
+
+#### 1. Demo Flow - Kirana Pulse Mode (requirements.md)
+
+**REMOVED:**
+- Exact quantities: "Order 15 packets"
+- High confidence: "0.85 confidence"
+- Avg consumption claims: "Avg consumption: 5 packets/day. Will run out in <1 day"
+- Exact packet counts in chat responses: "केवल 1 पैकेट"
+
+**REPLACED WITH:**
+- "Top-up to bucket 3+ (HIGH urgency, LOW confidence 0.3)"
+- Alternative: "Order range: 10-20 packets (LOW confidence 0.3-0.4)"
+- Explanation: "Current stock: bucket 1 (low). No purchase history available. Recommendation: top-up to maintain stock."
+- Chat response: "bucket 1 (low stock)" instead of exact counts
+
+**KEY PRINCIPLE**: Exact reorder quantities + avg consumption/day shown ONLY when purchase events exist (WhatsApp/POS modes).
+
+#### 2. Citation Placeholders (requirements.md & design.md)
+
+**REMOVED:**
+- Vague "industry research from Nielsen, IBEF"
+
+**REPLACED WITH:**
+- "~12 million grocery retail outlets [CITE: McKinsey 2022 grocery retail India]"
+- "~13 million kirana stores [CITE: Business Standard/Hindustan Times 2024 kirana store count]"
+
+**ACTION REQUIRED**: Replace placeholders with actual citations before final submission.
+
+#### 3. Unsourced Industry Estimates (requirements.md)
+
+**CHANGED:**
+- "stockout loss 10-15% (industry estimates)" → "10-15% (hypothesis to validate)"
+- "margins typically 8-15%" → "thin margins (category-dependent)"
+
+#### 4. Multimodal Pipeline Alignment (requirements.md)
+
+**UPDATED Requirement 2 Acceptance Criteria:**
+- Criterion 2: "SHALL use Amazon Textract for OCR preprocessing, then Bedrock to structure the extracted text"
+- Criterion 3: "SHALL use Amazon Transcribe for speech-to-text preprocessing, then Bedrock to extract purchase information from the transcribed text"
+
+**KEY PRINCIPLE**: Image/voice inputs → Textract/Transcribe preprocessing → Bedrock structuring (not direct Bedrock processing).
+
+#### 5. Speculative Scaling Numbers (design.md)
+
+**REMOVED:**
+- "1,000 stores on single EC2 instance"
+- "~₹5,000/month infrastructure"
+- "100,000 stores on ECS cluster"
+- "~₹50,000/month infrastructure + ₹50L/month Bedrock"
+- "1M+ stores"
+- "~₹5L/month infrastructure + ₹5Cr/month Bedrock"
+
+**REPLACED WITH:**
+- "Illustrative Planning Scenarios" header
+- Generic descriptions: "Suitable for pilot and early adopters", "Supports growing customer base"
+- Disclaimer: "Specific capacity and cost projections depend on actual usage patterns, AWS pricing, and architectural optimizations"
+
+### Round 1 Changes (Previous)
+
+#### 1. Executive Summary (requirements.md)
 
 **REMOVED:**
 - "12.5M stores" (unverifiable exact number)
@@ -169,3 +231,28 @@ When presenting to judges:
 
 1. `.kiro/specs/vyapaar-copilot/requirements.md` - Executive summary, market sizing, impact metrics, pricing, unit economics
 2. `.kiro/specs/vyapaar-copilot/design.md` - Market context, encryption description, Pulse Mode algorithm, data models
+
+
+## Round 2 Summary: Final Judge-Safe Refinements
+
+### What Changed
+1. **Demo Flow Pulse Mode**: Removed exact quantities, high confidence, and avg consumption claims. Replaced with "top-up to bucket 3+" or quantity ranges with LOW confidence.
+2. **Citations**: Replaced vague "industry research" with specific cite-ready placeholders [CITE: McKinsey 2022], [CITE: Business Standard 2024].
+3. **Industry Estimates**: Changed "industry estimates" to "hypothesis to validate" for stockout loss percentages.
+4. **Margins**: Removed specific "8-15%" claim, replaced with "thin margins (category-dependent)".
+5. **Multimodal Pipeline**: Updated requirements to explicitly state Textract/Transcribe preprocessing before Bedrock structuring.
+6. **Scaling Numbers**: Removed all specific capacity/cost claims, replaced with "illustrative planning scenarios" and disclaimers.
+
+### Critical Principle Reinforced
+**Pulse Mode Limitations**: System NEVER claims exact per-SKU quantities or avg consumption/day from Pulse-only data. These metrics appear ONLY when purchase events (WhatsApp/POS) exist.
+
+### Action Items Before Final Submission
+1. Replace [CITE: ...] placeholders with actual citations
+2. Verify all "hypothesis to validate" claims are clearly labeled
+3. Ensure demo script matches updated Pulse Mode output format
+4. Review that no unverifiable numbers remain in any section
+
+### Files Modified (Round 2)
+1. `.kiro/specs/vyapaar-copilot/requirements.md` - Demo Flow, citations, industry estimates, multimodal pipeline
+2. `.kiro/specs/vyapaar-copilot/design.md` - Market context citations, scalability path
+3. `.kiro/specs/vyapaar-copilot/REVISION_SUMMARY.md` - This document (added Round 2 changes)

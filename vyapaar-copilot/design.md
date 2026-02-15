@@ -21,7 +21,7 @@ Vyapaar Copilot is a hybrid AI-deterministic system that combines Amazon Bedrock
 - Frontend: React/HTML responsive web app
 - Deployment: AWS (EC2/ECS/Lambda)
 
-**Market Context**: India has approximately 12 million grocery retail outlets according to industry research (Nielsen, IBEF reports cite ~13 million kirana stores). This design addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
+**Market Context**: India has approximately 12 million grocery retail outlets [CITE: McKinsey 2022 grocery retail India] and many business reports cite ~13 million kirana stores [CITE: Business Standard/Hindustan Times 2024 kirana store count]. This design addresses the inventory management needs of small-format retail stores that lack traditional POS infrastructure.
 
 **Technical Feasibility**: All components use production-ready technologies available in AWS Mumbai region. MVP can be built in 4 weeks with 2 developers. Demo requires <30 minutes setup time.
 
@@ -1626,19 +1626,21 @@ All components use mature, production-ready technologies:
 - **Frontend**: React app or simple HTML served by FastAPI
 - **Total Setup Time**: <30 minutes for experienced developer
 
-### Scalability Path
+### Scalability Path (Illustrative Planning Scenarios)
 
 **Phase 1 (MVP)**: Single-store, SQLite, local deployment
-- **Capacity**: 1,000 stores on single EC2 instance
-- **Cost**: ~₹5,000/month infrastructure
+- Suitable for pilot and early adopters
+- Infrastructure costs scale with usage
 
 **Phase 2 (Growth)**: Multi-tenant, PostgreSQL, containerized
-- **Capacity**: 100,000 stores on ECS cluster
-- **Cost**: ~₹50,000/month infrastructure + ₹50L/month Bedrock
+- Supports growing customer base
+- Managed database services with encryption at rest
 
 **Phase 3 (Scale)**: Distributed, Aurora, multi-region
-- **Capacity**: 1M+ stores
-- **Cost**: ~₹5L/month infrastructure + ₹5Cr/month Bedrock
+- Enterprise-grade infrastructure
+- Costs scale with adoption and usage patterns
+
+Note: Specific capacity and cost projections depend on actual usage patterns, AWS pricing, and architectural optimizations during implementation.
 
 ## Technical Risks and Mitigations
 
