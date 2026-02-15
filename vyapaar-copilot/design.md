@@ -178,17 +178,33 @@ class PurchaseEvent:
 ```python
 class ReorderRecommendation:
     id: str  # UUID
-    store_id: str  # Foreign key to Store (needed for validation)
+    store_id: str  # Foreign key to Store
     product_id: str  # Foreign key to Product
-    recommended_quantity: float
+
+    # Stock state (Pulse always provides a bucket; units are optional)
+    current_bucket: int  # 0..4 (4 means 4+)
+    current_units: Optional[float]  # only when known (POS stock count or quick-count)
+
+    # Output type
+    recommendation_type: str  # "TOP_UP_BUCKET" | "RANGE_QUANTITY" | "EXACT_QUANTITY"
+
+    # Output fields (only relevant ones are filled)
+    target_bucket: Optional[int]  # for TOP_UP_BUCKET
+    recommended_qty_min: Optional[float]  # for RANGE_QUANTITY
+    recommended_qty_max: Optional[float]  # for RANGE_QUANTITY
+    recommended_quantity: Optional[float]  # for EXACT_QUANTITY (or user-confirmed)
+
     urgency: str  # "low", "medium", "high"
     confidence_score: float
     stockout_risk: float  # 0.0 to 1.0
-    current_stock: int
-    avg_daily_consumption: float
+
+    # Units-based metrics (only when consumption in units is available)
+    avg_daily_consumption_units: Optional[float]
     days_until_stockout: Optional[float]
+
     generated_at: datetime
     user_adjusted_quantity: Optional[float]
+
 ```
 
 ### 2. Bedrock Integration Module
@@ -358,120 +374,117 @@ Response:
 #### Reorder Quantity Algorithm
 
 ```python
-def calculate_reorder_quantity(
+def calculate_reorder_recommendation(
     product_id: str,
     store_id: str,
-    current_stock: int,
-    purchase_history: List[PurchaseEvent],
-    stock_history: List[StockLevel]
+    current_bucket: int,                 # Pulse bucket (0..4)
+    current_units: Optional[float],      # Optional real units (POS or quick-count)
+    purchase_history: List[PurchaseEvent]
 ) -> ReorderRecommendation:
     """
-    Deterministic reorder calculation using consumption velocity.
-    Adapts to store type configuration.
-    
-    Algorithm:
-    1. Fetch store configuration (lead_time_days, target_cover_days)
-    2. Calculate average daily consumption from PURCHASE EVENTS (not bucket changes)
-    3. Use Pulse data for risk scoring only (current stock level)
-    4. Estimate days until stockout: current_stock / avg_daily_consumption
-    5. Calculate safety stock: avg_daily_consumption * lead_time_days
-    6. Reorder quantity = (avg_daily_consumption * target_cover_days) + safety_stock - current_stock
-    7. Compute confidence based on data availability and variance
-    
-    CRITICAL - Pulse Mode Limitations:
-    - Pulse buckets (0/1/2/3/4+) are NOT exact quantities
-    - They indicate stock levels: 0=out, 1=low, 2=medium, 3=good, 4+=high
-    - Consumption velocity REQUIRES actual purchase events (WhatsApp/POS data)
-    - In Pulse-only mode (no purchase history):
-      * System uses "top-up to target bucket" logic
-      * Recommendations are conservative with LOW confidence
-      * Output: "top-up to bucket 3+" OR quantity range with LOW confidence
-    - Exact reorder quantities ONLY possible when purchase events exist
+    Deterministic reorder logic.
+
+    Key rule:
+    - Buckets are NOT units. Pulse-only mode must NOT output exact quantities unless user confirms.
+    - Exact quantities require units-based consumption + current_units (or user confirmation).
     """
-    
-    # Step 1: Get store configuration
+
     store = get_store(store_id)
     lead_time_days = store.lead_time_days
     target_cover_days = store.target_cover_days
-    
-    # Step 2: Calculate consumption velocity from PURCHASE EVENTS
+
+    # ----------------------------
+    # CASE A: Pulse-only (no / insufficient purchases)
+    # ----------------------------
     if len(purchase_history) < 2:
-        # Insufficient purchase data - use conservative defaults based on store type
-        # This is the "no receipts" scenario - rely on Pulse for risk scoring
-        if store.store_type == "kirana":
-            avg_daily_consumption = 1.0  # Conservative estimate
-        elif store.store_type == "mini_mart":
-            avg_daily_consumption = 2.0
-        else:  # small_supermarket
-            avg_daily_consumption = 5.0
-        confidence = 0.3
-        
-        # In "no receipts" mode, use Pulse bucket as proxy for current stock
-        # Recommend "top-up to target bucket" logic with LOW confidence
-        # NEVER claim exact per-SKU quantities from Pulse-only data
-        if current_stock <= 1:  # Bucket 0 or 1
-            # Output: "Top-up to bucket 3+" OR "Order 8-12 units (LOW confidence)"
-            reorder_quantity = 10  # Conservative estimate for demo
-            urgency = "high"
-            stockout_risk = 0.9
-        elif current_stock == 2:  # Bucket 2
-            reorder_quantity = 5  # Conservative estimate
-            urgency = "medium"
-            stockout_risk = 0.6
-        else:  # Bucket 3 or 4+
-            reorder_quantity = 0
-            urgency = "low"
-            stockout_risk = 0.2
-    else:
-        # Calculate from PURCHASE EVENTS (actual consumption)
-        consumption_rates = []
-        for i in range(len(purchase_history) - 1):
-            days_diff = (purchase_history[i+1].purchased_at - purchase_history[i].purchased_at).days
-            quantity_purchased = purchase_history[i].quantity
-            if days_diff > 0:
-                # Consumption rate = quantity purchased / days between purchases
-                consumption_rates.append(quantity_purchased / days_diff)
-        
-        if consumption_rates:
-            avg_daily_consumption = sum(consumption_rates) / len(consumption_rates)
-            variance = calculate_variance(consumption_rates)
-            confidence = min(0.9, 0.5 + (len(consumption_rates) / 20))  # More data = higher confidence
-        else:
-            avg_daily_consumption = 0.5
-            confidence = 0.4
-        
-        # Step 3: Days until stockout (using Pulse bucket as current stock indicator)
-        if avg_daily_consumption > 0:
-            days_until_stockout = current_stock / avg_daily_consumption
-        else:
-            days_until_stockout = float('inf')
-        
-        # Step 4: Stockout risk (adjusted for store type lead times)
-        if days_until_stockout <= lead_time_days:
-            stockout_risk = 0.9
-            urgency = "high"
-        elif days_until_stockout <= lead_time_days * 2:
-            stockout_risk = 0.6
-            urgency = "medium"
-        else:
-            stockout_risk = 0.2
-            urgency = "low"
-        
-        # Step 5: Reorder quantity
-        safety_stock = avg_daily_consumption * lead_time_days
-        target_stock = avg_daily_consumption * target_cover_days
-        reorder_quantity = max(0, target_stock + safety_stock - current_stock)
-    
+        # Risk/urgency purely from bucket (realistic)
+        bucket_risk = {0: 1.0, 1: 0.8, 2: 0.5, 3: 0.2, 4: 0.1}
+        stockout_risk = bucket_risk.get(current_bucket, 0.5)
+        urgency = "high" if current_bucket <= 1 else "medium" if current_bucket == 2 else "low"
+
+        target_bucket = 3 if store.store_type in ("kirana", "mini_mart") else 4
+
+        return ReorderRecommendation(
+            store_id=store_id,
+            product_id=product_id,
+            current_bucket=current_bucket,
+            current_units=None,
+            recommendation_type="TOP_UP_BUCKET",
+            target_bucket=target_bucket,
+            recommended_qty_min=None,
+            recommended_qty_max=None,
+            recommended_quantity=None,
+            urgency=urgency,
+            confidence_score=0.30,
+            stockout_risk=stockout_risk,
+            avg_daily_consumption_units=None,
+            days_until_stockout=None,
+            generated_at=datetime.now(),
+            user_adjusted_quantity=None
+        )
+
+    # ----------------------------
+    # CASE B: Purchases available (units-based consumption possible)
+    # ----------------------------
+    # Compute avg consumption (units/day) from purchase intervals (simple baseline)
+    rates = []
+    for i in range(len(purchase_history) - 1):
+        days_diff = (purchase_history[i+1].purchased_at - purchase_history[i].purchased_at).days
+        qty = purchase_history[i].quantity
+        if days_diff > 0:
+            rates.append(qty / days_diff)
+
+    avg_daily = sum(rates) / len(rates) if rates else 0.0
+
+    # If we don't know current_units, we must return a RANGE (not exact)
+    if current_units is None or avg_daily <= 0:
+        # Need enough stock for cover + lead time (range ±20%)
+        qty_needed = max(0.0, avg_daily * (target_cover_days + lead_time_days))
+        return ReorderRecommendation(
+            store_id=store_id,
+            product_id=product_id,
+            current_bucket=current_bucket,
+            current_units=None,
+            recommendation_type="RANGE_QUANTITY",
+            target_bucket=None,
+            recommended_qty_min=round(qty_needed * 0.8, 1),
+            recommended_qty_max=round(qty_needed * 1.2, 1),
+            recommended_quantity=None,
+            urgency="medium" if current_bucket <= 2 else "low",
+            confidence_score=0.60,
+            stockout_risk=0.60 if current_bucket <= 2 else 0.30,
+            avg_daily_consumption_units=round(avg_daily, 2),
+            days_until_stockout=None,
+            generated_at=datetime.now(),
+            user_adjusted_quantity=None
+        )
+
+    # If current_units is known, we can compute exact reorder quantity
+    days_until = current_units / avg_daily
+    stockout_risk = 0.9 if days_until <= lead_time_days else 0.6 if days_until <= lead_time_days * 2 else 0.2
+    urgency = "high" if stockout_risk >= 0.9 else "medium" if stockout_risk >= 0.6 else "low"
+
+    safety_stock = avg_daily * lead_time_days
+    target_stock = avg_daily * target_cover_days
+    reorder_qty = max(0.0, target_stock + safety_stock - current_units)
+
     return ReorderRecommendation(
+        store_id=store_id,
         product_id=product_id,
-        recommended_quantity=round(reorder_quantity, 1),
+        current_bucket=current_bucket,
+        current_units=current_units,
+        recommendation_type="EXACT_QUANTITY",
+        target_bucket=None,
+        recommended_qty_min=None,
+        recommended_qty_max=None,
+        recommended_quantity=round(reorder_qty, 1),
         urgency=urgency,
-        confidence_score=confidence,
+        confidence_score=0.85,
         stockout_risk=stockout_risk,
-        current_stock=current_stock,
-        avg_daily_consumption=round(avg_daily_consumption, 2),
-        days_until_stockout=round(days_until_stockout, 1) if days_until_stockout != float('inf') else None,
-        generated_at=datetime.now()
+        avg_daily_consumption_units=round(avg_daily, 2),
+        days_until_stockout=round(days_until, 1),
+        generated_at=datetime.now(),
+        user_adjusted_quantity=None
     )
 ```
 
@@ -760,16 +773,23 @@ GET /api/v1/reorder/cart
 Response: {
   "generated_at": "2024-01-15T10:30:00Z",
   "recommendations": [
-    {
-      "product_id": "uuid",
-      "product_name": "Tata Salt 1kg",
-      "recommended_quantity": 15,
-      "urgency": "high",
-      "confidence_score": 0.85,
-      "stockout_risk": 0.9,
-      "current_stock": 1,
-      "days_until_stockout": 2.5
-    }
+{
+  "product_id": "uuid",
+  "product_name": "Tata Salt 1kg",
+  "recommendation_type": "TOP_UP_BUCKET",
+  "current_bucket": 1,
+  "current_units": null,
+  "target_bucket": 3,
+  "recommended_qty_min": 5,
+  "recommended_qty_max": 10,
+  "recommended_quantity": null,
+  "urgency": "high",
+  "confidence_score": 0.35,
+  "stockout_risk": 0.8,
+  "avg_daily_consumption_units": null,
+  "days_until_stockout": null
+}
+
   ],
   "total_items": 12
 }
@@ -887,18 +907,31 @@ CREATE TABLE reorder_recommendations (
     id TEXT PRIMARY KEY,
     store_id TEXT NOT NULL,
     product_id TEXT NOT NULL,
-    recommended_quantity REAL NOT NULL,
+
+    recommendation_type TEXT NOT NULL,         -- TOP_UP_BUCKET | RANGE_QUANTITY | EXACT_QUANTITY
+
+    current_bucket INTEGER NOT NULL,           -- 0..4
+    current_units REAL,                        -- nullable
+
+    target_bucket INTEGER,                     -- nullable
+    recommended_qty_min REAL,                  -- nullable
+    recommended_qty_max REAL,                  -- nullable
+    recommended_quantity REAL,                 -- nullable (exact only)
+
     urgency TEXT NOT NULL,
     confidence_score REAL NOT NULL,
     stockout_risk REAL NOT NULL,
-    current_stock INTEGER NOT NULL,
-    avg_daily_consumption REAL NOT NULL,
-    days_until_stockout REAL,
+
+    avg_daily_consumption_units REAL,          -- nullable
+    days_until_stockout REAL,                  -- nullable
+
     generated_at TIMESTAMP NOT NULL,
     user_adjusted_quantity REAL,
+
     FOREIGN KEY (store_id) REFERENCES stores(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
 
 -- Chat history (for context and audit)
 CREATE TABLE chat_history (
@@ -1258,15 +1291,18 @@ VyapaarMitra collects and processes the following types of data:
 4. Submit → System saves stock levels
 
 **View Reorder Recommendations (1 minute)**:
-1. System shows reorder cart:
-   - Amul Milk 1L: Order 20 packets (HIGH urgency)
-   - Tata Salt 1kg: Order 15 packets (HIGH urgency)
-   - Britannia Bread: Order 10 loaves (MEDIUM urgency)
-2. Review recommendations, adjust quantities if needed
+**View Reorder Recommendations (1 minute)**:
+1. System shows reorder cart (Pulse-only = top-up + ranges):
+   - Amul Milk 1L: Top-up to bucket 3+ (suggested 10–20 packets, LOW confidence 0.35)
+   - Tata Salt 1kg: Top-up to bucket 3+ (suggested 5–10 packets, LOW confidence 0.32)
+   - Britannia Bread: Top-up to bucket 2+ (suggested 4–6 loaves, LOW confidence 0.30)
+2. Owner confirms exact quantities (quick slider / manual edit):
+   - Milk: 16, Salt: 8, Bread: 5
 
 **Place Orders (1 minute)**:
 1. Tap "Generate Order Message"
-2. System creates WhatsApp message in Hindi:
+2. System creates WhatsApp message in Hindi (using owner-confirmed quantities):
+
    ```
    नमस्ते,
    
