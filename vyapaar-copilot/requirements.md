@@ -27,8 +27,8 @@
 ### Illustrative Impact Scenario
 
 **Assumptions** (to be validated with pilot data):
-- Typical kirana shop: ₹50,000 monthly sales (assumption)
-- Estimated stockout loss: 10-15% of potential sales (hypothesis to validate)
+- Example small shop scenario: ₹50,000 monthly sales (assumption; varies widely by store size/location)
+- Stockout loss on tracked fast-movers: 5-10% of potential sales (hypothesis to validate)
 - System reduces stockouts by: 30% (hypothesis to validate)
 
 **Formula**: 
@@ -249,7 +249,7 @@ During initial setup, users select their store type, which configures default pa
 #### Acceptance Criteria
 
 1. WHEN a user uploads a WhatsApp text message containing order information, THE VyapaarMitra SHALL extract product names, quantities, and prices into structured JSON
-2. WHEN a user uploads a WhatsApp screenshot image, THE VyapaarMitra SHALL use Amazon Textract for OCR preprocessing, then Bedrock to structure the extracted text into order details
+2. WHEN a user uploads a WhatsApp screenshot image, THE Vyapaar_Copilot SHALL extract text using Amazon Textract OR a vision-capable Amazon Bedrock model (fallback), then Bedrock SHALL structure the content into order details
 3. WHEN a user uploads a WhatsApp voice note, THE VyapaarMitra SHALL use Amazon Transcribe for speech-to-text preprocessing, then Bedrock to extract purchase information from the transcribed text
 4. WHEN extraction is complete, THE VyapaarMitra SHALL display extracted purchase events with confidence scores for user verification
 5. WHEN a user confirms extracted data, THE VyapaarMitra SHALL record the purchase events in the database
@@ -398,7 +398,7 @@ During initial setup, users select their store type, which configures default pa
 
 ### Scale & Reach (Impact Scoring)
 1. **Addressable Market**: 
-   - ~12 million small-format retail stores in India (industry research: Nielsen, IBEF)
+   - ~12 million grocery retail outlets in India [CITE: McKinsey grocery retail India] and many business reports cite ~13 million kirana stores [CITE: Indian business press]
    - Includes kirana shops, mini-marts, and small supermarkets
 
 2. **Measurable Impact per Store** (to be validated):
@@ -440,12 +440,13 @@ This demo showcases the same product (Tata Salt 1kg) across three different stor
    - Mark 3 other products with various buckets
    - Submit → Data saved
 
-3. **View Reorder Cart** (45 sec)
-   - System shows: "Tata Salt 1kg - Top-up to bucket 3+ (HIGH urgency, LOW confidence 0.3)"
-   - Explanation: "Current stock: bucket 1 (low). No purchase history available. Recommendation: top-up to maintain stock."
-   - Alternative display: "Order range: 10-20 packets (LOW confidence 0.3-0.4)"
-   - Click "Generate Order Message"
-   - Copy WhatsApp message in Hindi: "नमस्ते, कृपया भेजें: टाटा नमक 1kg - 10-15 पैकेट"
+3. **Quick Stock Count + View Reorder Cart** (60 sec)
+   - App prompts a quick count for extracted fast-movers
+   - Priya enters: Tata Salt 1kg = 8 packets
+   - System shows: "Tata Salt 1kg - Order 25 packets (MEDIUM urgency, 0.88 confidence)"
+   - Explanation: "Current stock (quick count): 8 packets. Avg consumption: 3 packets/day. Will run out in 2.7 days."
+   - Adjust quantity to 30 (user override)
+   - Generate order message in English
 
 4. **Chat Query** (30 sec)
    - Ask in Hindi: "मेरे पास कौन से प्रोडक्ट कम हो रहे हैं?"
